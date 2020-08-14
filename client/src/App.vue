@@ -27,7 +27,7 @@ export default {
   methods: {
     getCharacters: function() {
       axios
-        .get("https://gwz-easy.herukuapp.com/characters")
+        .get("https://gwz-easy.herokuapp.com/characters")
         .then(response => (this.characters = response.data));
     }
   },

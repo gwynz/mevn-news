@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     postCharacter: function() {
-      axios.post("https://gwz-easy.herukuapp.com/characters", {
+      axios.post("https://gwz-easy.herokuapp.com/characters", {
         name: this.name,
         profession: this.profession
       });
