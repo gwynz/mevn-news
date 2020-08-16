@@ -10,7 +10,8 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      primary: '#38b2ac',
+      primary: '#e53e3e',
+      primary_hover: '#f56565',
       black: '#000',
       white: '#fff',
 
