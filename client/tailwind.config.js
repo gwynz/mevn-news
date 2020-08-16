@@ -1,6 +1,12 @@
 module.exports = {
   purge: [],
   theme: {
+    inset: {
+      '0': '0',
+      '30%': '30%',
+      '50%': '50%',
+      auto: 'auto',
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
