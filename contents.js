@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
 // Delete user
 router.delete('/:id', async (req, res) => {
     try {
-        console.log(req.params.id)
         const odcontent = await Content.findByIdAndDelete(req.params.id)
 
         if (!odcontent) res.status(404).send("No item found")

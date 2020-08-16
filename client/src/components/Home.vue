@@ -87,7 +87,7 @@
     </section>
     <footer class="w-full p-10 text-center bg-red-100 mt-5">
       <div class="font-bold">Chúc Anh / Chị đầu tư thành công!</div>
-      <div class="font-bold mt-2">Người soạn tin: Trần Phương Dung</div>
+      <div class="font-bold mt-2">Người soạn tin: {{creator.name}}</div>
     </footer>
   </div>
 </template>
@@ -100,6 +100,7 @@ export default {
   data: function () {
     return {
       listItem: [],
+      creator: "",
       toggle: "character-viewer",
       characters: null,
       chartOptions: {
@@ -123,6 +124,9 @@ export default {
     getData() {
       axios.get("https://gwz-easy.herokuapp.com/news").then((response) => {
         this.listItem = response.data;
+      });
+      axios.get("https://gwz-easy.herokuapp.com/creators").then((response) => {
+        this.creator = response.data;
       });
     },
     genaratePdf() {

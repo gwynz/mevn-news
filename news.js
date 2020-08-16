@@ -47,7 +47,6 @@ router.delete('/:id', async (req, res) => {
         }, function (err) {
             if (err) console.log(err);
         });
-        console.log(events)
         const newItem = await News.findByIdAndDelete(title_id)
         if (!newItem) res.status(404).send("No item found")
         res.status(200).send()

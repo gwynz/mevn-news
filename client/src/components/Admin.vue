@@ -59,7 +59,7 @@
           id="username"
           type="text"
           v-model="newTitle"
-          placeholder="nhap tieu de o day"
+          placeholder="Nhập tiêu đề "
         />
       </div>
 
@@ -68,7 +68,7 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           @click="saveTitle"
-        >Bam vao day de luu</button>
+        >Lưu</button>
       </div>
 
       <div class="rounded overflow-hidden shadow-md mt-5">
@@ -110,6 +110,26 @@
         </div>
       </div>
     </div>
+    <div class="mt-10 max-w-5xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">Người viết</label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="username"
+          type="text"
+          v-model="newCreator.name"
+          placeholder="Nhập người viết"
+        />
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          @click="saveCreator"
+        >Lưu</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -123,12 +143,18 @@ export default {
       newTitle: "",
       newContents: [],
       showNotify: [],
+      newCreator: "",
     };
   },
   methods: {
     getData: function () {
       axios.get("https://gwz-easy.herokuapp.com/news").then((response) => {
         this.listItem = response.data;
+      });
+    },
+    getCreator: function () {
+      axios.get("https://gwz-easy.herokuapp.com/creators").then((response) => {
+        this.newCreator = response.data;
       });
     },
     showContentTitle(item) {
@@ -192,9 +218,25 @@ export default {
         })
         .catch((error) => console.log("loi ne", error));
     },
+    saveCreator() {
+      axios
+        .post("https://gwz-easy.herokuapp.com/creators", {
+          creator: this.newCreator,
+        })
+        .then((res) => {
+          this.getCreator();
+          this.showNotify.push(true);
+          setTimeout(() => {
+            this.showNotify.shift();
+          }, 2000);
+          return res;
+        })
+        .catch((error) => console.log("loi ne", error));
+    },
   },
   mounted: function () {
     this.getData();
+    this.getCreator();
   },
 };
 </script>

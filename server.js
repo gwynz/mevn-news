@@ -31,6 +31,8 @@ server.use('/news', router_news);
 const router_content = require('./contents');
 server.use('/contents', router_content);
 
+const router_creator = require('./creators');
+server.use('/creators', router_creator);
 
 const port = process.env.PORT || 3100
 server.listen(port, () => console.log("Server started!"));
