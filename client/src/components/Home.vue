@@ -47,8 +47,8 @@
           </g>
         </svg>
         <svg
-          class="mt-48"
-          style="height: 400px"
+          class="mt-48 w-full"
+          style="height: 600px"
           viewBox="0 0 1440 190"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@
           </g>
         </svg>
       </div>
-      <div class="grid grid-rows-4 grid-flow-col gap-4">
+      <div class="grid lg:grid-rows-4 lg:grid-flow-col gap-4">
         <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow pl-3">
           <h2
             class="cursor-pointer hover:text-teal-400 font-bold text-xl uppercase underline my-5 text-primary bg-teal-100 p-3"
