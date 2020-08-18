@@ -8,7 +8,11 @@ const characterSchema = new mongoose.Schema({
     },
     text: {
         type: String,
-        required: true
+        required: false
+    },
+    urlImage: {
+        type: String,
+        required: false
     }
 });
 

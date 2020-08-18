@@ -3,6 +3,7 @@ const router = express.Router();
 const News = require('./model/news');
 const Content = require('./model/content');
 
+
 router.get('/', async (req, res) => {
     try {
         const news = await News.find();
@@ -54,4 +55,7 @@ router.delete('/:id', async (req, res) => {
         res.status(500).send(err)
     }
 })
+
+
+
 module.exports = router;

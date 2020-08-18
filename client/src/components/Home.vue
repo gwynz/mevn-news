@@ -1,11 +1,11 @@
 <template>
-  <div id="canvas" class="relative">
+  <div id="canvas">
     <header class="m-10 my-3 relative">
       <img src="@/imgs/logo_company.png" class="absolute w-16 h-16 left-0 top-0" />
       <router-link to="/admin">
         <div
-          class="rounded w-1/3 cursor-pointer mx-auto hover:bg-primary_hover px-4 py-3 bg-primary text-white text-2xl font-bold text-center uppercase shadow-lg"
-        >Bảng tin thị trường</div>
+          class="rounded w-1/3 cursor-pointer mx-auto hover:bg-primary_hover px-4 py-3 bg-primary text-white text-3xl font-bold text-center uppercase shadow-lg"
+        >Bản tin thị trường</div>
       </router-link>
     </header>
 
@@ -75,12 +75,21 @@
       <div class="grid lg:grid-rows-3 lg:grid-flow-col gap-4">
         <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow pl-3">
           <h2
-            class="cursor-pointer hover:text-primary_hover font-bold text-xl uppercase underline my-5 text-primary bg-red-100 p-3"
+            class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
           >
             <span>{{item.title.title}}</span>
           </h2>
           <ul class="px-10 list-disc text-base pb-3">
-            <li v-for="content in item.contents" :key="content._id">{{content.text}}</li>
+            <template v-for="content in item.contents">
+              <li v-if="content.text" :key="content._id">
+                <div class="text-xl">{{content.text}}</div>
+              </li>
+              <li v-if="content.urlImage" :key="content._id" class="list-none">
+                <div class="mx-auto py-10" style="max-width:500px">
+                  <img :src="content.urlImage" class="w-full h-full" />
+                </div>
+              </li>
+            </template>
           </ul>
         </div>
       </div>
