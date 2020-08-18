@@ -285,7 +285,6 @@ export default {
           }
         )
         .then(() => {
-          console.log("sss");
           this.getData();
           this.showNotify.push(true);
           setTimeout(() => {
@@ -294,10 +293,6 @@ export default {
           return res;
         })
         .catch(function () {
-          this.showNotify.push(false);
-          setTimeout(() => {
-            this.showNotify.pop();
-          }, 2000);
           return res;
         });
     },
