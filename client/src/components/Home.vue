@@ -69,11 +69,11 @@
           </g>
         </svg>
       </div>
-      <div class="flex flex-wrap justify-center">
+      <div class>
         <div
           v-for="item in listItem"
           :key="item._id"
-          class="bg-white rounded-lg shadow pl-3 m-2"
+          class="bg-white rounded-lg shadow pl-3 m-2 float-left"
           style="width:48%"
         >
           <h2
@@ -98,7 +98,7 @@
         </div>
       </div>
     </section>
-    <footer class="w-full text-lg p-10 text-center bg-red-100 mt-5">
+    <footer class="clear-both w-full text-lg p-10 text-center bg-red-100 mt-5">
       <div class="font-bold">Chúc Anh / Chị đầu tư thành công!</div>
       <div class="font-bold mt-2">Người soạn tin: {{creator.name}}</div>
     </footer>

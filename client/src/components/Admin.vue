@@ -108,7 +108,7 @@
                   <button
                     @click="removeContent(i._id)"
                     v-if="item.contents.length"
-                    class="text-red-500 hover:text-red-400 font-bold px-1 rounded-full flex items-center ml-3 content-center h-8 w-8"
+                    class="text-red-500 hover:text-red-400 font-bold px-1 rounded-full flex items-center ml-3 content-center h-8 w-8 flex-end"
                   >X</button>
                 </div>
               </div>
