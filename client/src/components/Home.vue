@@ -8,7 +8,6 @@
         >Bản tin thị trường</div>
       </router-link>
     </header>
-
     <!--<div class="absolute flex justify-end mt-2 right-0 top-0 w-16 h-16 pr-10">
       <div class="hover:text-primary_hover cursor-pointer">
         <svg
@@ -27,8 +26,6 @@
           />
         </svg>
       </div>
-
-     
     </div>-->
     <section class="p-10 relative">
       <div
@@ -72,8 +69,13 @@
           </g>
         </svg>
       </div>
-      <div class="grid lg:grid-rows-3 lg:grid-flow-col gap-4">
-        <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow pl-3">
+      <div class="flex flex-wrap justify-center">
+        <div
+          v-for="item in listItem"
+          :key="item._id"
+          class="bg-white rounded-lg shadow pl-3 m-2"
+          style="width:48%"
+        >
           <h2
             class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
           >
@@ -84,17 +86,19 @@
               <li v-if="content.text" :key="content._id">
                 <div class="text-xl">{{content.text}}</div>
               </li>
-              <li v-if="content.urlImage" :key="content._id" class="list-none">
-                <div class="mx-auto py-10" style="max-width:500px">
+            </template>
+            <div class="list-none flex flex--wrap justify-around">
+              <div v-for="content in item.contents" :key="content._id" v-if="content.urlImage">
+                <div class="py-10 mr-3" style="max-width:500px">
                   <img :src="content.urlImage" class="w-full h-full" />
                 </div>
-              </li>
-            </template>
+              </div>
+            </div>
           </ul>
         </div>
       </div>
     </section>
-    <footer class="w-full p-10 text-center bg-red-100 mt-5">
+    <footer class="w-full text-lg p-10 text-center bg-red-100 mt-5">
       <div class="font-bold">Chúc Anh / Chị đầu tư thành công!</div>
       <div class="font-bold mt-2">Người soạn tin: {{creator.name}}</div>
     </footer>
