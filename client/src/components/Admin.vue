@@ -50,7 +50,25 @@
         </div>
       </div>
     </div>
+    <div class="mt-10 max-w-5xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">Tên bài viết</label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          v-model="newCreator.nameOfNews"
+          placeholder="Nhập tên bài viết"
+        />
+      </div>
 
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          @click="saveCreator"
+        >Lưu</button>
+      </div>
+    </div>
     <div class="mt-10 max-w-5xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
       <div class="mb-4">
         <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">Tiêu đề</label>
@@ -77,10 +95,16 @@
               class="text-gray-700 text-base font-bold cursor-pointer"
               @click.prevent="showContentTitle(item)"
             >{{item.title.title}}</p>
-            <button
-              @click="removeTitle(item.title._id)"
-              class="h-6 bg-red-500 hover:bg-red-700 text-white font-bold px-2 rounded-full flex items-center"
-            >X</button>
+            <div class="flex">
+              <button
+                @click="showModal(item.title._id,item.title.title)"
+                class="mr-3 h-6 bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 rounded-full flex items-center"
+              >Edit</button>
+              <button
+                @click="removeTitle(item.title._id)"
+                class="h-6 bg-red-500 hover:bg-red-700 text-white font-bold px-2 rounded-full flex items-center"
+              >Remove</button>
+            </div>
           </div>
           <div v-show="collapseContentTitle[listItem.indexOf(item)]" class="px-10 py-6">
             <div class="text-gray-700 text-base w-full flex justify-between">
@@ -143,13 +167,15 @@
     </div>
     <div class="mt-10 max-w-5xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
       <div class="mb-4">
-        <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">Người viết</label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="text"
+        <label
+          class="block text-gray-700 text-2xl font-bold mb-2"
+          for="username"
+        >Nội dung cuối trang</label>
+        <textarea
+          class="w-full h-24 resize border rounded focus:outline-none focus:shadow-outline"
+          placeholder="Nhập nội dung cuối trang"
           v-model="newCreator.name"
-          placeholder="Nhập người viết"
-        />
+        ></textarea>
       </div>
 
       <div class="flex items-center justify-between">
@@ -160,12 +186,17 @@
         >Lưu</button>
       </div>
     </div>
+    <modalModify ref="modalModifyTitle" @updateTitle="updateTitle" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import modalModify from "./partial/modalModify";
 export default {
+  components: {
+    modalModify,
+  },
   data: function () {
     return {
       listItem: [],
@@ -173,7 +204,7 @@ export default {
       newTitle: "",
       newContents: [],
       showNotify: [],
-      newCreator: "",
+      newCreator: {},
       image: {},
     };
   },
@@ -195,7 +226,25 @@ export default {
     },
     saveTitle() {
       axios
-        .post("https://gwz-easy.herokuapp.com/news", { title: this.newTitle })
+        .post("http://localhost:3100/news", { title: this.newTitle })
+        .then((res) => {
+          this.newTitle = "";
+          this.getData();
+          this.showNotify.push(true);
+          setTimeout(() => {
+            this.showNotify.shift();
+          }, 2000);
+          return res;
+        })
+        .catch((error) => console.log("loi ne", error));
+    },
+    updateTitle(id, newTitle) {
+      console.log(id, newTitle);
+      axios
+        .post("https://gwz-easy.herokuapp.com/news/save", {
+          _id: id,
+          title: newTitle,
+        })
         .then((res) => {
           this.newTitle = "";
           this.getData();
@@ -270,7 +319,6 @@ export default {
       this.supmitFile(id);
     },
     supmitFile(id) {
-      console.log(id);
       let formData = new FormData();
       formData.append("image", this.image);
       formData.append("title_id", id);
@@ -295,6 +343,12 @@ export default {
         .catch(function () {
           return res;
         });
+    },
+    showModal(id, title) {
+      var modal = this.$refs.modalModifyTitle;
+      modal.newData = title;
+      modal.currentId = id;
+      modal.onShowModal();
     },
   },
   mounted: function () {

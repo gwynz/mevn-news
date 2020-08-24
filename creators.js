@@ -20,7 +20,8 @@ router.post('/', async (req, res) => {
             _id: creator._id
         }, {
             $set: {
-                name: creator.name
+                name: creator.name,
+                nameOfNews: creator.nameOfNews
             }
         }, {
             new: true

@@ -1,11 +1,13 @@
 <template>
   <div id="canvas">
-    <header class="m-10 my-3 relative">
-      <img src="@/imgs/logo_company.png" class="absolute w-16 h-16 left-0 top-0" />
+    <header class="m-10 my-3 mx-16 relative">
+      <img src="@/imgs/logo_company.png" class="absolute w-16 h-16 left-0 top-0 hidden lg:block" />
       <router-link to="/admin">
         <div
-          class="rounded w-1/3 cursor-pointer mx-auto hover:bg-primary_hover px-4 py-3 bg-primary text-white text-3xl font-bold text-center uppercase shadow-lg"
-        >Bản tin thị trường</div>
+          class="rounded lg:w-1/3 cursor-pointer mx-auto hover:bg-primary_hover px-4 py-3 bg-primary text-white text-xl lg:text-3xl font-bold text-center uppercase shadow-lg"
+        >
+          <span style="white-space: pre-line">{{creator.nameOfNews}}</span>
+        </div>
       </router-link>
     </header>
     <!--<div class="absolute flex justify-end mt-2 right-0 top-0 w-16 h-16 pr-10">
@@ -32,21 +34,6 @@
         class="absolute left-0 right-0 bg-center bg-repeat-x -mb-8 hidden md:block"
         style="z-index: -1"
       >
-        <svg viewBox="0 0 1440 190" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="1440" height="190" fill="white" />
-          <path
-            d="M1440 95.4893C790 245.489 650 -54.5107 0 95.4893V0H1440V95.4893Z"
-            fill="#F7FAFC"
-          />
-          <g stroke-width="2">
-            <g stroke="#EDF2F7">
-              <path d="M0 95.4893C650 -54.5107 790 245.489 1440 95.4893" />
-              <path d="M0 95.4893C650 15.4893 790 175.489 1440 95.4893" />
-              <path d="M0 95.4893C650 -214.511 790 405.489 1440 95.4893" />
-            </g>
-            <path d="M0 95.4893C650 -134.511 790 325.489 1440 95.4893" stroke="#fed7d7" />
-          </g>
-        </svg>
         <svg
           class="mt-48 w-full"
           style="height: 600px"
@@ -73,8 +60,7 @@
         <div
           v-for="item in listItem"
           :key="item._id"
-          class="bg-white rounded-lg shadow pl-3 m-2 float-left"
-          style="width:48%"
+          class="bg-white rounded-lg shadow-sm p-3 float-left lg:w-1/2"
         >
           <h2
             class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
@@ -89,7 +75,7 @@
             </template>
             <div class="list-none flex flex--wrap justify-around">
               <div v-for="content in item.contents" :key="content._id" v-if="content.urlImage">
-                <div class="py-10 mr-3" style="max-width:500px">
+                <div class="py-3 mr-3" style="max-width:400px">
                   <img :src="content.urlImage" class="w-full h-full" />
                 </div>
               </div>
@@ -99,8 +85,9 @@
       </div>
     </section>
     <footer class="clear-both w-full text-lg p-10 text-center bg-red-100 mt-5">
-      <div class="font-bold">Chúc Anh / Chị đầu tư thành công!</div>
-      <div class="font-bold mt-2">Người soạn tin: {{creator.name}}</div>
+      <div class="font-bold">
+        <span style="white-space: pre-line">{{creator.name}}</span>
+      </div>
     </footer>
   </div>
 </template>
@@ -109,6 +96,7 @@
 import axios from "axios";
 import jspdf from "jspdf";
 import html2canvas from "html2canvas";
+
 export default {
   data: function () {
     return {

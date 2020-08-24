@@ -25,13 +25,30 @@ router.get('/', async (req, res) => {
     }
 });
 router.post('/', async (req, res) => {
-    const news = new News({
-        title: req.body.title,
-    });
+    const news = new News(req.body);
     try {
-        const newNews = await news.save();
-        res.status(201).json(newNews);
-
+        const newContent = await news.save();
+        res.status(201).json(newContent);
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        });
+    }
+});
+//udapte
+router.post('/save', async (req, res) => {
+    let news = req.body;
+    try {
+        let doc = await News.findOneAndUpdate({
+            _id: news._id
+        }, {
+            $set: {
+                title: news.title
+            }
+        }, {
+            new: true
+        });
+        res.status(201).json(doc);
     } catch (err) {
         res.status(400).json({
             message: err.message

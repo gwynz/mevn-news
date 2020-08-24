@@ -4,6 +4,9 @@ const characterSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
+    },
+    nameOfNews: {
+        type: String
     }
 });
 
