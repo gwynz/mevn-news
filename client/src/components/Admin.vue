@@ -234,7 +234,7 @@ export default {
     },
     saveTitle() {
       axios
-        .post("http://localhost:3100/news", { title: this.newTitle })
+        .post("https://gwz-easy.herokuapp.com/news", { title: this.newTitle })
         .then((res) => {
           this.newTitle = "";
           this.getData();
