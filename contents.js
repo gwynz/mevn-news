@@ -27,6 +27,24 @@ router.post('/', async (req, res) => {
         });
     }
 });
+//udapte
+router.post('/update', async (req, res) => {
+    let content = req.body;
+    try {
+        let doc = await Content.findOneAndUpdate({
+            _id: content._id
+        }, {
+            $set: {
+                text: content.text
+            }
+        });
+        res.status(201).json(doc);
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        });
+    }
+});
 // Delete user
 router.delete('/:id', async (req, res) => {
     try {

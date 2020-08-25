@@ -97,7 +97,7 @@
             >{{item.title.title}}</p>
             <div class="flex">
               <button
-                @click="showModal(item.title._id,item.title.title)"
+                @click="showModalTitle(item.title._id,item.title.title)"
                 class="mr-3 h-6 bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 rounded-full flex items-center"
               >Edit</button>
               <button
@@ -121,11 +121,18 @@
               <div class="p-8 w-full" v-for="i in item.contents" :key="i._id">
                 <div v-if="i.text" class="flex justify-between">
                   {{i.text}}
-                  <button
-                    @click="removeContent(i._id)"
-                    v-if="item.contents.length"
-                    class="text-red-500 hover:text-red-400 font-bold px-1 rounded-full flex items-center ml-3 content-center h-8 w-8"
-                  >X</button>
+                  <div class="flex">
+                    <button
+                      @click="showModalContent(i._id,i.text)"
+                      v-if="item.contents.length"
+                      class="text-gray-500 hover:text-gray-400 font-bold px-1 rounded-full flex items-center justify-end h-8 w-8"
+                    >E</button>
+                    <button
+                      @click="removeContent(i._id)"
+                      v-if="item.contents.length"
+                      class="text-red-500 hover:text-red-400 font-bold px-1 rounded-full flex items-center ml-3 justify-end h-8 w-8"
+                    >X</button>
+                  </div>
                 </div>
                 <div v-else class="w-1/2 flex justify-between">
                   <img :src="i.urlImage" alt />
@@ -186,7 +193,7 @@
         >Lưu</button>
       </div>
     </div>
-    <modalModify ref="modalModifyTitle" @updateTitle="updateTitle" />
+    <modalModify ref="modalModifyTitle" @updateTitle="funcUpdate" />
   </div>
 </template>
 
@@ -206,6 +213,7 @@ export default {
       showNotify: [],
       newCreator: {},
       image: {},
+      funcUpdate: Object,
     };
   },
   methods: {
@@ -239,7 +247,6 @@ export default {
         .catch((error) => console.log("loi ne", error));
     },
     updateTitle(id, newTitle) {
-      console.log(id, newTitle);
       axios
         .post("https://gwz-easy.herokuapp.com/news/save", {
           _id: id,
@@ -284,8 +291,23 @@ export default {
         })
         .catch((error) => console.log("loi ne", error));
     },
+    updateContent(id, newContent) {
+      axios
+        .post("https://gwz-easy.herokuapp.com/contents/update", {
+          _id: id,
+          text: newContent,
+        })
+        .then((res) => {
+          this.getData();
+          this.showNotify.push(true);
+          setTimeout(() => {
+            this.showNotify.shift();
+          }, 2000);
+          return res;
+        })
+        .catch((error) => console.log("loi ne", error));
+    },
     removeContent(id) {
-      console.log(id);
       axios
         .delete("https://gwz-easy.herokuapp.com/contents/" + id)
         .then((res) => {
@@ -315,7 +337,6 @@ export default {
     },
     handleFileUpload(index, id) {
       this.image = this.$refs.fileImages[index].files[0];
-      console.log(id);
       this.supmitFile(id);
     },
     supmitFile(id) {
@@ -344,10 +365,18 @@ export default {
           return res;
         });
     },
-    showModal(id, title) {
+    showModalTitle(id, title) {
       var modal = this.$refs.modalModifyTitle;
       modal.newData = title;
       modal.currentId = id;
+      this.funcUpdate = this.updateTitle;
+      modal.onShowModal();
+    },
+    showModalContent(id, content) {
+      var modal = this.$refs.modalModifyTitle;
+      modal.newData = content;
+      modal.currentId = id;
+      this.funcUpdate = this.updateContent;
       modal.onShowModal();
     },
   },
