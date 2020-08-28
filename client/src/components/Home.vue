@@ -56,11 +56,11 @@
           </g>
         </svg>
       </div>
-      <div class>
+      <div v-if="currentLayout==0" class="container mx-auto">
         <div
           v-for="item in listItem"
           :key="item._id"
-          class="bg-white rounded-lg p-3 float-left lg:w-1/2"
+          class="bg-white rounded-lg shadow-sm p-3 mt-4"
         >
           <h2
             class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
@@ -74,13 +74,61 @@
               </li>
             </template>
             <div class="list-none flex flex--wrap justify-around">
-              <template v-for="content in item.contents">
-                <div class="w-full" :key="content._id" v-if="content.urlImage">
-                  <div class="p-3 mr-3 w-full">
-                    <img :src="content.urlImage" class="w-full h-full" />
-                  </div>
+              <div v-for="content in item.contents" :key="content._id" v-if="content.urlImage">
+                <div class="py-3 mr-3" style="max-width:400px">
+                  <img :src="content.urlImage" class="w-full h-full" />
                 </div>
-              </template>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <div v-else-if="currentLayout==2">
+        <div
+          v-for="item in listItem"
+          :key="item._id"
+          class="bg-white rounded-lg shadow-sm p-3 float-left lg:w-1/2"
+        >
+          <h2
+            class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
+          >
+            <span>{{item.title.title}}</span>
+          </h2>
+          <ul class="px-10 list-disc text-base pb-3">
+            <template v-for="content in item.contents">
+              <li v-if="content.text" :key="content._id">
+                <div class="text-xl">{{content.text}}</div>
+              </li>
+            </template>
+            <div class="list-none flex flex--wrap justify-around">
+              <div v-for="content in item.contents" :key="content._id" v-if="content.urlImage">
+                <div class="py-3 mr-3" style="max-width:400px">
+                  <img :src="content.urlImage" class="w-full h-full" />
+                </div>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <div v-else-if="currentLayout==1" class="grid grid-cols-2">
+        <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow-sm p-3">
+          <h2
+            class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
+          >
+            <span>{{item.title.title}}</span>
+          </h2>
+          <ul class="px-10 list-disc text-base pb-3">
+            <template v-for="content in item.contents">
+              <li v-if="content.text" :key="content._id">
+                <div class="text-xl">{{content.text}}</div>
+              </li>
+            </template>
+            <div class="list-none flex flex--wrap justify-around">
+              <div v-for="content in item.contents" :key="content._id" v-if="content.urlImage">
+                <div class="py-3 mr-3" style="max-width:400px">
+                  <img :src="content.urlImage" class="w-full h-full" />
+                </div>
+              </div>
             </div>
           </ul>
         </div>
@@ -123,8 +171,15 @@ export default {
       },
     };
   },
+  computed: {
+    currentLayout() {
+      return this.$store.state.typeOfLayout;
+    },
+  },
   methods: {
     getData() {
+      console.log(this.$store.state.typeOfLayout);
+
       axios.get("https://gwz-easy.herokuapp.com/news").then((response) => {
         this.listItem = response.data;
       });

@@ -52,6 +52,39 @@
     </div>
     <div class="mt-10 max-w-5xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
       <div class="mb-4">
+        <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">Layout</label>
+
+        <div class="dropdown inline-block relative z-10 mb-8">
+          <button
+            class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+            @click="showDropdownLayout=!showDropdownLayout"
+          >
+            <span class="mr-1">{{arrLayout[currentLayout]}}</span>
+            <svg
+              class="fill-current h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </button>
+          <ul
+            class="dropdown-menu absolute text-gray-700 pt-1 left-0 right-0"
+            v-show="showDropdownLayout"
+          >
+            <li v-for="(item, index) in arrLayout" :key="item">
+              <a
+                class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                href="#"
+                @click="currentLayout = index;showDropdownLayout=!showDropdownLayout"
+              >{{item}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="mt-10 max-w-5xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
+      <div class="mb-4">
         <label class="block text-gray-700 text-2xl font-bold mb-2" for="username">Tên bài viết</label>
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -214,7 +247,19 @@ export default {
       newCreator: {},
       image: {},
       funcUpdate: Object,
+      showDropdownLayout: false,
+      arrLayout: ["Column", "Row", "Float"],
     };
+  },
+  computed: {
+    currentLayout: {
+      get: function () {
+        return this.$store.state.typeOfLayout;
+      },
+      set: function (newValue) {
+        this.$store.commit("setLayout", newValue);
+      },
+    },
   },
   methods: {
     getData: function () {
@@ -372,6 +417,7 @@ export default {
       this.funcUpdate = this.updateTitle;
       modal.onShowModal();
     },
+
     showModalContent(id, content) {
       var modal = this.$refs.modalModifyTitle;
       modal.newData = content;
