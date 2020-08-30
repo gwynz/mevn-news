@@ -40,11 +40,7 @@
         </svg>
       </div>
       <div v-if="currentLayout==0" class="container mx-auto">
-        <div
-          v-for="item in listItem"
-          :key="item._id"
-          class="bg-white rounded-lg shadow-sm p-3 mt-4"
-        >
+        <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow p-3 mt-4">
           <h2
             class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
           >
@@ -97,8 +93,8 @@
           </ul>
         </div>
       </div>
-      <div v-else-if="currentLayout==1" class="grid grid-cols-2">
-        <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow-sm p-3">
+      <div v-else-if="currentLayout==1" class="grid grid-cols-2 gap-4">
+        <div v-for="item in listItem" :key="item._id" class="bg-white rounded-lg shadow-lg p-3">
           <h2
             class="cursor-pointer hover:text-primary_hover font-bold text-2xl uppercase underline my-5 text-primary bg-red-100 p-3"
           >
