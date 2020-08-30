@@ -1,5 +1,6 @@
 <template>
   <div class="relative">
+    <pageLoader />
     <div class="fixed">
       <div v-for="(no,index) in showNotify" :key="index" class="mt-4">
         <div v-if="no">
@@ -233,9 +234,12 @@
 <script>
 import axios from "axios";
 import modalModify from "./partial/modalModify";
+import news from "../api/news";
+import PageLoader from "./partial/pageLoader";
 export default {
   components: {
     modalModify,
+    PageLoader,
   },
   data: function () {
     return {
@@ -263,13 +267,14 @@ export default {
   },
   methods: {
     getData: function () {
-      axios.get("https://gwz-easy.herokuapp.com/news").then((response) => {
-        this.listItem = response.data;
+      console.log(news.getNewsWithContent());
+      news.getNewsWithContent().then((data) => {
+        this.listItem = data;
       });
     },
     getCreator: function () {
-      axios.get("https://gwz-easy.herokuapp.com/creators").then((response) => {
-        this.newCreator = response.data;
+      news.getCreators().then((data) => {
+        this.newCreator = data;
       });
     },
     showContentTitle(item) {
@@ -278,8 +283,8 @@ export default {
       this.collapseContentTitle = [...this.collapseContentTitle];
     },
     saveTitle() {
-      axios
-        .post("https://gwz-easy.herokuapp.com/news", { title: this.newTitle })
+      news
+        .saveNews({ title: this.newTitle })
         .then((res) => {
           this.newTitle = "";
           this.getData();
