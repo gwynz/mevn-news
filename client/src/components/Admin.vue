@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <pageLoader />
+    <pageLoader :isloading="loading" />
     <div class="fixed">
       <div v-for="(no,index) in showNotify" :key="index" class="mt-4">
         <div v-if="no">
@@ -243,6 +243,7 @@ export default {
   },
   data: function () {
     return {
+      loading: false,
       listItem: [],
       collapseContentTitle: [],
       newTitle: "",
@@ -255,6 +256,7 @@ export default {
       arrLayout: ["Column", "Row", "Float"],
     };
   },
+  created: {},
   computed: {
     currentLayout: {
       get: function () {
@@ -267,10 +269,16 @@ export default {
   },
   methods: {
     getData: function () {
+      this.loading = true;
       console.log(news.getNewsWithContent());
-      news.getNewsWithContent().then((data) => {
-        this.listItem = data;
-      });
+      news
+        .getNewsWithContent()
+        .then((data) => {
+          this.listItem = data;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     getCreator: function () {
       news.getCreators().then((data) => {
@@ -283,6 +291,7 @@ export default {
       this.collapseContentTitle = [...this.collapseContentTitle];
     },
     saveTitle() {
+      this.loading = true;
       news
         .saveNews({ title: this.newTitle })
         .then((res) => {
@@ -294,9 +303,13 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     updateTitle(id, newTitle) {
+      this.loading = true;
       axios
         .post("https://gwz-easy.herokuapp.com/news/save", {
           _id: id,
@@ -311,9 +324,13 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     removeTitle(id) {
+      this.loading = true;
       axios
         .delete("https://gwz-easy.herokuapp.com/news/" + id)
         .then((res) => {
@@ -324,9 +341,13 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     saveContent(title_id, index) {
+      this.loading = true;
       var text = this.newContents[index];
       axios
         .post("https://gwz-easy.herokuapp.com/contents", { title_id, text })
@@ -339,7 +360,10 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     updateContent(id, newContent) {
       axios
@@ -355,9 +379,13 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     removeContent(id) {
+      this.loading = true;
       axios
         .delete("https://gwz-easy.herokuapp.com/contents/" + id)
         .then((res) => {
@@ -368,9 +396,13 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     saveCreator() {
+      this.loading = true;
       axios
         .post("https://gwz-easy.herokuapp.com/creators", {
           creator: this.newCreator,
@@ -383,13 +415,17 @@ export default {
           }, 2000);
           return res;
         })
-        .catch((error) => console.log("loi ne", error));
+        .catch((error) => console.log("loi ne", error))
+        .finally(() => {
+          this.loading = false;
+        });
     },
     handleFileUpload(index, id) {
       this.image = this.$refs.fileImages[index].files[0];
       this.supmitFile(id);
     },
     supmitFile(id) {
+      this.loading = true;
       let formData = new FormData();
       formData.append("image", this.image);
       formData.append("title_id", id);
@@ -413,6 +449,9 @@ export default {
         })
         .catch(function () {
           return res;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     showModalTitle(id, title) {
@@ -431,7 +470,7 @@ export default {
       modal.onShowModal();
     },
   },
-  mounted: function () {
+  created: function () {
     this.getData();
     this.getCreator();
   },

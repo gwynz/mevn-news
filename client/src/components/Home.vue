@@ -1,7 +1,8 @@
 <template>
   <div id="canvas">
-    <PageLoader />
-    <header class="m-10 my-3 mx-16 relative">
+    <PageLoader :isloading="loading" />
+
+    <header class="my-3 mx-16 relative" :class="currentLayout==0?'container mx-auto':''">
       <img src="@/imgs/logo_company.png" class="absolute w-16 h-16 left-0 top-0 hidden lg:block" />
       <router-link to="/admin">
         <div
@@ -160,6 +161,7 @@ export default {
           },
         ],
       },
+      loading: false,
     };
   },
   computed: {
@@ -169,11 +171,15 @@ export default {
   },
   methods: {
     getData() {
-      console.log(this.$store.state.typeOfLayout);
-
-      axios.get("https://gwz-easy.herokuapp.com/news").then((response) => {
-        this.listItem = response.data;
-      });
+      this.loading = true;
+      axios
+        .get("https://gwz-easy.herokuapp.com/news")
+        .then((response) => {
+          this.listItem = response.data;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
       axios.get("https://gwz-easy.herokuapp.com/creators").then((response) => {
         this.creator = response.data;
       });

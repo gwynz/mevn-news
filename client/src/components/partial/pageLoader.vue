@@ -1,5 +1,5 @@
 <template>
-  <div class="page-loader" v-if="isloaded">
+  <div class="page-loader" v-if="isloading">
     <div class="cube"></div>
     <div class="cube"></div>
     <div class="cube"></div>
@@ -9,7 +9,8 @@
 
 <script>
 export default {
-  data: () => {
+  props: ["isloading"],
+  /* data: () => {
     return {
       isloaded: false,
     };
@@ -23,7 +24,7 @@ export default {
         }, 500);
       }
     };
-  },
+  },*/
 };
 </script>
 
